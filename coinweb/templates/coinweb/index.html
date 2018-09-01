@@ -1,0 +1,85 @@
+{% extends "coinweb/base.html" %}
+{% load static %}
+{% block title %}VivoCoin{% endblock %}
+{% block content %}
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+	<h1 class="display-4">VivoCoin</h1>
+	<p class="lead">VivoKey demonstration website</p>
+	{% if user.is_authenticated %}
+	{% if message %}
+	<p id="#message"><b>{{ message }}</b></p>
+	{% endif %}
+
+	<img src="{% static "coinweb/ajax-loader.gif" %}" id='imgloader' class="imgloaderhidden">
+
+	<p><b>Account balance: </b> ${{ balance_dollars }}</p>
+	{% if debt %}
+		<p><b>In debt!</b> Would you like to refinance, or do you have a spare organ to sell?</p>
+	{% endif %}
+
+	<form method='post'>
+		{% csrf_token %}
+		<input type='hidden' name='action' value='more_money_pls'>
+		<button type='submit'>Get more money</button>
+	</form>
+	<br />
+	{% if not debt %}
+	<form method='post'>
+		{% csrf_token %}
+		<input type='hidden' name='action' value='spend_money'>
+		<input type='hidden' name='cents' value='2000'>
+		<button type='submit'>Pay $20</button>
+	</form>
+	<br />
+	<form method='post'>
+		{% csrf_token %}
+		<input type='hidden' name='action' value='spend_money'>
+		<input type='hidden' name='cents' value='5000'>
+		<button type='submit'>Pay $50</button>
+	</form>
+	{% endif %}
+
+	{% endif %}
+</div>
+
+{% if wait_for_payment %}
+	<script>
+		function poll_complete(data) {
+			if(data.status == 'auth') {
+				setTimeout(function() { wait(); }, 2000);
+			} else if (data.status == 'failed') {
+				console.log('payment failed');
+				$('#message').text('Payment failed!');
+			} else if (data.status == 'completed') {
+				console.log('payment succeeded');
+				window.location.href = '.';
+			} else {
+				console.log('unknown status of ' + data.status);
+			}
+		}
+
+		$('#imgloader').attr('class', 'imgloadervisible');
+
+		// poll status -- on a real site we'd long-poll and use notifications on the backend 
+
+		function wait() {
+			jQuery.ajax({
+				url: 'auth_status/{{ wait_for_payment }}/',
+				success: function(data) {poll_complete(data);},
+				error: function(xhr, jstatus, error) {
+					/* Wait and retry */
+					setTimeout(function() { wait(); }, 2000);
+				},
+				dataType: 'json',
+				timeout: 2000
+			});
+		}
+
+		wait();
+
+	</script>
+{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,5 @@
+TESTING_WITH_SIMULATOR
+db.sqlite3
+oidc_secrets.fish
+*.pyc
+__pycache__

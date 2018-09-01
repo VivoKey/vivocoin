@@ -1,0 +1,106 @@
+.mainlogo {
+	width: 60%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.smallicon {
+	width: 1em;
+	height: 1em;
+}
+
+#qrcode {
+	width: 256px;
+	height: 256px;
+	margin: auto;
+	margin-top: 5em;
+	margin-bottom: 5em;
+}
+
+#content {
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+.padded {
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	margin-left: 2%;
+	margin-right: 2%;
+	background: #f7f7f7;
+	border: 1px solid #ddd;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.white-popup {
+	position: relative;
+	background: #FFF;
+	padding: 20px;
+	width: auto;
+	max-width: 900px;
+	margin: 20px auto;
+}
+
+.user-image-list {
+	border: 1px dashed #ddd;
+	height: 114px;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.user-image-wrapper {
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+}
+
+.user-image {
+	max-height: 100px;
+	height: 100%;
+	width: auto;
+	border: 5px solid #000;
+	margin: 3px;
+	filter: grayscale(70%);
+}
+
+.user-image-delete {
+	position: absolute;
+	right: 1px;
+	top: 1px;
+	width: 24px;
+	height: 24px;
+	padding: 3px;
+	background-color: rgba(255, 255, 255, 0.8);
+	opacity: 0.0;
+}
+
+.user-image-wrapper:hover .user-image-delete {
+	opacity: 1.0;
+	transition: opacity 0.25s ease-in-out;
+}
+
+.user-image-selected {
+	border: 5px solid #77f;
+	filter: none;
+}
+
+h1 {
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	margin-left: 2%;
+	margin-right: 2%;
+	color: #999;
+}
+
+.imgloaderhidden {
+	visibility: hidden;
+}
+
+.imgloadervisible{
+	visibility: visible;
+}
+
