@@ -125,8 +125,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.environ.get('STATIC_ROOT')
 
-VIVO_SERVER = 'http://192.168.1.5:8000/'
+VIVO_SERVER = os.environ.get('VIVO_SERVER', 'http://192.168.1.5:8000/')
 VIVO_VALIDATE = VIVO_SERVER + 'api/v1.0/validate/'
 VIVO_OIDC_ENDPOINT = VIVO_SERVER + 'openid/'
 
