@@ -120,6 +120,24 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    
+    'loggers': {
+        'mozilla_django_oidc': {
+            'handlers': ['console'],
+            'level': 'DEBUG'
+        },
+    }
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
@@ -127,12 +145,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.environ.get('STATIC_ROOT')
 
-VIVO_SERVER = os.environ.get('VIVO_SERVER', 'http://192.168.1.5:8000/')
-VIVO_VALIDATE = VIVO_SERVER + 'api/v1.0/validate/'
+VIVO_SERVER = os.environ.get('VIVO_SERVER', 'http://vivo.devlocal:8000/')
+VIVO_VALIDATE = VIVO_SERVER + 'v1.0/validate/'
 VIVO_OIDC_ENDPOINT = VIVO_SERVER + 'openid/'
 
 # VivoKey will call this URL when the authorisation is complete.
-VALIDATION_CALLBACK = os.environ.get('VALIDATION_CALLBACK', 'http://192.168.1.158:8001/validation_complete/')
+VALIDATION_CALLBACK = os.environ.get('VALIDATION_CALLBACK', 'http://vivocoin.devlocal:8001/validation_complete/')
 
 # https://mozilla-django-oidc.readthedocs.io/en/stable/installation.html
 OIDC_RP_CLIENT_ID = os.environ['OIDC_RP_CLIENT_ID']
@@ -144,6 +162,6 @@ OIDC_OP_TOKEN_ENDPOINT = VIVO_OIDC_ENDPOINT + "token/"
 OIDC_OP_USER_ENDPOINT = VIVO_OIDC_ENDPOINT + "userinfo/"
 OIDC_STORE_ACCESS_TOKEN = True
 OIDC_STORE_ID_TOKEN = True
-OIDC_RP_SCOPES = 'openid email Validate'
+OIDC_RP_SCOPES = 'openid email Validate profile'
 LOGIN_REDIRECT_URL = '/'
 
