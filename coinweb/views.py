@@ -16,7 +16,7 @@ INITIAL_BALANCE = 10000
 class ValidationFailed(Exception):
     pass
 
-def _start_vivokey_validation_fromserver(request, description, our_id):
+def _start_vivokey_validation_fromserver(request, message, our_id):
     """
     We do this while the user waits for the page to load -- a proper implementation
     would do this via AJAX so the user can see some feedback (or use a worker
@@ -26,7 +26,7 @@ def _start_vivokey_validation_fromserver(request, description, our_id):
     """
     token = request.session['oidc_access_token']
     json_data = json.dumps({
-        'description': description,
+        'message': message,
         'timeout': 30,
         'id': our_id,
         'callback': settings.VALIDATION_CALLBACK,
@@ -74,14 +74,14 @@ def index(request):
 
         elif request.POST.get('action') == 'spend_money':
             spend_amount_cents = int(request.POST.get('cents'))
-            description = 'Pay $%.02f to VivoCoin' % (spend_amount_cents // 100,)
+            message = 'Pay $%.02f to VivoCoin' % (spend_amount_cents // 100,)
             payment = Payment.objects.create(nonce=secrets.token_hex(8),
                                              status='auth',
                                              from_account=account,
                                              amount_cents=spend_amount_cents)
             try:
                 signed_id = _get_signed_payment_token(payment)
-                _start_vivokey_validation_fromserver(request, description, signed_id)
+                _start_vivokey_validation_fromserver(request, message, signed_id)
             except ValidationFailed as e:
                 payment.status = 'failed'
                 payment.save()
