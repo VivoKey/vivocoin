@@ -25,6 +25,7 @@ def _start_vivokey_validation_fromserver(request, message, our_id):
     Returns the transaction ID or raises ValidationFailed.
     """
     token = request.session['oidc_access_token']
+    print('oidc_access_token:', token)
     json_data = json.dumps({
         'message': message,
         'timeout': 30,
@@ -96,6 +97,7 @@ def index(request):
         balance_dollars = 0
 
     context = {
+        'oidc_token': request.session.get('oidc_access_token', ''),  # for debugging
         'account': Account,
         'balance_dollars': balance_dollars,
         'debt': balance_dollars < 0,
