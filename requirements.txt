@@ -3,7 +3,7 @@ certifi==2018.8.24
 cffi==1.11.5
 chardet==3.0.4
 cryptography==2.3.1
-Django==2.1.10
+Django==2.2.4
 idna==2.7
 josepy==1.1.0
 mozilla-django-oidc==1.1.2
@@ -15,4 +15,5 @@ pytz==2018.5
 requests==2.19.1
 six==1.11.0
 South==1.0.2
+sqlparse==0.3.0
 urllib3==1.23
