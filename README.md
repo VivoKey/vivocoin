@@ -20,17 +20,21 @@ Before you start, you will need a custom application set up on the VivoKey serve
 
 Set the following environment variables:
 
- * VIVO_SERVER: "https://api.vivokey.com/"
- * VALIDATION_CALLBACK: "http://your-server-location/validation_complete/"
- * OIDC_RP_CLIENT_ID: Your OpenID Connect client ID
- * OIDC_RP_CLIENT_SECRET: Your OpenID Connect client secret
+ * `VIVO_SERVER`: `https://api.vivokey.com/`
+ * `VALIDATION_CALLBACK`: `http://your-server-location/validation_complete/`
+ * `OIDC_RP_CLIENT_ID`: Your OpenID Connect client ID
+ * `OIDC_RP_CLIENT_SECRET`: Your OpenID Connect client secret
 
 Here is an example configuration:
 
-    export VIVO_SERVER="https://api.vivokey.com/"
+	export VIVO_SERVER="https://api.vivokey.com/"
 	export VALIDATION_CALLBACK="http://192.168.0.2:8000/validation_complete/"
 	export OIDC_RP_CLIENT_ID="29485022"
 	export OIDC_RP_CLIENT_SECRET="980a949209b9028498fe0932839e09809"
+
+Configuration from an info pack
+===============================
+If you have a VivoKey info pack, you can omit `VALIDATION_CALLBACK`, `OIDC_RP_CLIENT_ID`, and `OIDC_RP_CLIENT_SECRET`, and instead supply the path to the info pack using the environment variable `OIDC_INFO_PACK`.
 
 Running the server (development)
 ================================

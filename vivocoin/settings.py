@@ -149,12 +149,20 @@ VIVO_SERVER = os.environ.get('VIVO_SERVER', 'http://vivo.devlocal:8000/')
 VIVO_VALIDATE = VIVO_SERVER + 'v1.0/validate/'
 VIVO_OIDC_ENDPOINT = VIVO_SERVER + 'openid/'
 
-# VivoKey will call this URL when the authorisation is complete.
-VALIDATION_CALLBACK = os.environ.get('VALIDATION_CALLBACK', 'http://vivocoin.devlocal:8001/validation_complete/')
+if 'OIDC_INFO_PACK' in os.environ:
+    # Read and parse the OIDC info pack to set environment variables.
+    from .info_pack import read_auth_requestor_info
+    auth_requestor_info = read_auth_requestor_info(os.environ['OIDC_INFO_PACK'])
+    VALIDATION_CALLBACK = auth_requestor_info['callback']
+    OIDC_RP_CLIENT_ID = auth_requestor_info['client_id']
+    OIDC_RP_CLIENT_SECRET = auth_requestor_info['uid']
+    print('read', VALIDATION_CALLBACK, OIDC_RP_CLIENT_ID, OIDC_RP_CLIENT_SECRET)
+else:
+    # VivoKey will call this URL when the authorisation is complete.
+    VALIDATION_CALLBACK = os.environ.get('VALIDATION_CALLBACK', 'http://vivocoin.devlocal:8001/validation_complete/')
+    OIDC_RP_CLIENT_ID = os.environ['OIDC_RP_CLIENT_ID']
+    OIDC_RP_CLIENT_SECRET = os.environ['OIDC_RP_CLIENT_SECRET']
 
-# https://mozilla-django-oidc.readthedocs.io/en/stable/installation.html
-OIDC_RP_CLIENT_ID = os.environ['OIDC_RP_CLIENT_ID']
-OIDC_RP_CLIENT_SECRET = os.environ['OIDC_RP_CLIENT_SECRET']
 OIDC_RP_SIGN_ALGO = 'RS256'
 OIDC_OP_JWKS_ENDPOINT = VIVO_OIDC_ENDPOINT + 'jwks/'
 OIDC_OP_AUTHORIZATION_ENDPOINT = VIVO_OIDC_ENDPOINT + "authorize/"
