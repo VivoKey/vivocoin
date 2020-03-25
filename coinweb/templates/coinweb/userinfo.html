@@ -1,0 +1,17 @@
+{% extends "coinweb/base.html" %}
+{% load static %}
+{% block title %}VivoCoin user info{% endblock %}
+{% block content %}
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+	<h1 class="display-4">User Info</h1>
+
+	<p>OIDC access token: {{oidc_access_token}}</p>
+
+	<p>OIDC userinfo endpoint response: {{oidc_userinfo}}</p>
+
+	<p><a href="{% url 'index' %}">Go back</a></p>
+
+</div>
+
+{% endblock %}

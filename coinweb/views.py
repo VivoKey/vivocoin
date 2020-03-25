@@ -5,9 +5,12 @@ import urllib.request
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout as django_logout
+from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.core.signing import Signer
+from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 from .models import Account, Payment
 
@@ -97,7 +100,6 @@ def index(request):
         balance_dollars = 0
 
     context = {
-        'oidc_token': request.session.get('oidc_access_token', ''),  # for debugging
         'account': Account,
         'balance_dollars': balance_dollars,
         'debt': balance_dollars < 0,
@@ -105,10 +107,49 @@ def index(request):
         'wait_for_payment': wait_for_payment
     }
 
-    return render(
-        request,
-        'coinweb/index.html',
-        context)
+    return render(request, 'coinweb/index.html', context)
+
+def _oidc_userinfo():
+    """
+    Make the /userinfo call to VivoKey.
+
+    mozilla_django_oidc has already made this API call as as part of logging
+    in, but unfortunately didn't store the result, so just ask again.
+    """
+    token = request.session['oidc_access_token']
+    print('oidc_access_token:', token)
+    json_data = json.dumps({
+        'message': message,
+        'timeout': 30,
+        'id': our_id,
+        'callback': settings.VALIDATION_CALLBACK,
+    }).encode('utf-8')
+
+    request = urllib.request.Request(
+        settings.VIVO_VALIDATE,
+        data=json_data,
+        headers={
+            'Authorization': 'Bearer %s' % (token,),
+            'Content-Type': 'application/json',
+        }
+    )
+
+@login_required
+@require_POST
+def userinfo(request):
+    """
+    Return some information about the logged-in user.
+
+    This is extra info to help you while working with VivoKey OIDC and isn't
+    required to implement any core functionality.
+    """
+
+
+    context = {
+        'oidc_access_token': request.session.get('oidc_access_token', ''),  # for debugging
+    }
+
+    return render(request,'coinweb/userinfo.html', context)
 
 def validation_complete(request):
     # Callback from VivoKey.
