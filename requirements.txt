@@ -12,7 +12,7 @@ pycrypto==2.6.1
 pyjwkest==0.6.2
 pyOpenSSL==18.0.0
 pytz==2018.5
-requests==2.19.1
+requests==2.20.0
 six==1.11.0
 South==1.0.2
 sqlparse==0.3.0
