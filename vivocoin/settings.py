@@ -156,8 +156,7 @@ if 'OIDC_INFO_PACK' in os.environ:
     auth_requestor_info = read_auth_requestor_info(os.environ['OIDC_INFO_PACK'])
     VALIDATION_CALLBACK = auth_requestor_info['callback']
     OIDC_RP_CLIENT_ID = auth_requestor_info['client_id']
-    OIDC_RP_CLIENT_SECRET = auth_requestor_info['uid']
-    print('read', VALIDATION_CALLBACK, OIDC_RP_CLIENT_ID, OIDC_RP_CLIENT_SECRET)
+    OIDC_RP_CLIENT_SECRET = auth_requestor_info['client_secret']
 else:
     # VivoKey will call this URL when the authorisation is complete.
     VALIDATION_CALLBACK = os.environ.get('VALIDATION_CALLBACK', 'http://vivocoin.devlocal:8001/validation_complete/')
