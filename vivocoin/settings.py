@@ -147,6 +147,7 @@ STATIC_ROOT = os.environ.get('STATIC_ROOT')
 
 VIVO_SERVER = os.environ.get('VIVO_SERVER', 'http://vivo.devlocal:8000/')
 VIVO_VALIDATE = VIVO_SERVER + 'v1.0/validate/'
+VIVO_USERINFO = VIVO_SERVER + 'v1.0/userinfo/'
 VIVO_OIDC_ENDPOINT = VIVO_SERVER + 'openid/'
 
 if 'OIDC_INFO_PACK' in os.environ:

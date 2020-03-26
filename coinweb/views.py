@@ -109,7 +109,7 @@ def index(request):
 
     return render(request, 'coinweb/index.html', context)
 
-def _oidc_userinfo():
+def _oidc_userinfo(request):
     """
     Make the /userinfo call to VivoKey.
 
@@ -119,20 +119,19 @@ def _oidc_userinfo():
     token = request.session['oidc_access_token']
     print('oidc_access_token:', token)
     json_data = json.dumps({
-        'message': message,
         'timeout': 30,
-        'id': our_id,
-        'callback': settings.VALIDATION_CALLBACK,
     }).encode('utf-8')
 
     request = urllib.request.Request(
-        settings.VIVO_VALIDATE,
+        settings.OIDC_OP_USER_ENDPOINT,
         data=json_data,
         headers={
             'Authorization': 'Bearer %s' % (token,),
             'Content-Type': 'application/json',
         }
     )
+    response = urllib.request.urlopen(request).read().decode('utf-8')
+    return response
 
 @login_required
 @require_POST
@@ -147,6 +146,7 @@ def userinfo(request):
 
     context = {
         'oidc_access_token': request.session.get('oidc_access_token', ''),  # for debugging
+        'oidc_userinfo': _oidc_userinfo(request)
     }
 
     return render(request,'coinweb/userinfo.html', context)

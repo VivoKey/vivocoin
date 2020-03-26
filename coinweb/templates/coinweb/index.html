@@ -39,10 +39,10 @@
 		<button type='submit'>Pay $50</button>
 	</form>
 	{% endif %}
-
+	<br />
 	<form method="post" action="{% url 'userinfo' %}">
 		{% csrf_token %}
-		<button type="submit">OIDC user info"</button>
+		<button type="submit">OIDC user info</button>
 	</form>
 
 	{% endif %}
